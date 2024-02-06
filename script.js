@@ -8,8 +8,9 @@ const buttons = document.querySelectorAll('.app__card-button');
 const startPauseButton = document.querySelector('#start-pause');
 const startPauseText = document.querySelector('#start-pause span');
 const startPauseImage = document.querySelector('.app__card-primary-butto-icon');
+const cardTimer = document.querySelector('#timer');
 
-let elapsedTimeInSeconds = 5;
+let elapsedTimeInSeconds = 1500;
 let intervalId = null;
 
 const backgroundSoundCheckbox = document.querySelector('#alternar-musica');
@@ -30,21 +31,25 @@ backgroundSoundCheckbox.addEventListener('change', function() {
 });
 
 focusButton.addEventListener('click', () => {
+  elapsedTimeInSeconds = 1500;
   alterContext('foco');
   focusButton.classList.add('active');
 });
 
 shortBreakButton.addEventListener('click', () => {
+  elapsedTimeInSeconds = 300;
   alterContext('descanso-curto');
   shortBreakButton.classList.add('active');
 });
 
 longBreakButton.addEventListener('click', function() {
+  elapsedTimeInSeconds = 900;
   alterContext('descanso-longo');
   longBreakButton.classList.add('active');
 });
 
 function alterContext(context) {
+  showTimer();
   buttons.forEach(function (context) {
     context.classList.remove('active')
   });
@@ -84,7 +89,7 @@ const countdown = () => {
     return;
   }
   elapsedTimeInSeconds -= 1;
-  console.log(`Temporizador: ${elapsedTimeInSeconds}`);
+  showTimer();
 }
 
 startPauseButton.addEventListener('click', startAndPause)
@@ -107,3 +112,11 @@ function reset() {
   clearInterval(intervalId);
   intervalId = null;
 }
+
+function showTimer() {
+  const timer = new Date(elapsedTimeInSeconds * 1000);
+  const parsedTimer = timer.toLocaleTimeString('pt-BR', { minute: '2-digit', second: '2-digit'});
+  cardTimer.innerHTML = `${parsedTimer}`;
+}
+
+showTimer();
