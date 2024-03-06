@@ -5,6 +5,10 @@ const ulTasks = document.querySelector('.app__section-task-list');
 
 const taskList = JSON.parse(localStorage.getItem('tasks')) || [];
 
+function updateTasks() {
+  localStorage.setItem('tasks', JSON.stringify(taskList));
+}
+
 function addTaskElement(task) {
   const li = document.createElement('li');
   li.classList.add('app__section-task-list-item');
@@ -21,17 +25,25 @@ function addTaskElement(task) {
   p.textContent = task.description;
   p.classList.add('app__section-task-list-item-description');
 
+  const btnEdit = document.createElement('button');
+  btnEdit.classList.add('app_button-edit');
 
-  const button = document.createElement('button');
-  button.classList.add('app_button-edit');
+  btnEdit.onclick = () => {
+    const newDescription = prompt("Enter the text you want to edit:");
+    if (newDescription) {
+      p.textContent = newDescription;
+      task.description = newDescription;
+      updateTasks();
+    }
+  };
 
   const img = document.createElement('img');
   img.setAttribute('src', 'imagens/edit.png');
-  button.append(img);
+  btnEdit.append(img);
 
   li.append(svg);
   li.append(p);
-  li.append(button);
+  li.append(btnEdit);
 
   return li;
 }
@@ -48,7 +60,7 @@ formAddTask.addEventListener('submit', (event) => {
   taskList.push(task);
   const taskElement = addTaskElement(task);
   ulTasks.append(taskElement);
-  localStorage.setItem('tasks', JSON.stringify(taskList));
+  updateTasks();
   textArea.value = '';
   formAddTask.classList.add('hidden');
 });
