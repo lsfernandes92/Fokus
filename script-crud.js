@@ -52,3 +52,8 @@ formAddTask.addEventListener('submit', (event) => {
   textArea.value = '';
   formAddTask.classList.add('hidden');
 });
+
+taskList.forEach(task => {
+  const taskElement = addTaskElement(task)
+  ulTasks.append(taskElement)
+});
