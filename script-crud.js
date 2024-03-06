@@ -36,6 +36,10 @@ function addTaskElement(task) {
 
   btnEdit.onclick = () => {
     const newDescription = prompt("Enter the text you want to edit:");
+    if (newDescription === null) {
+      return;
+    }
+
     if (newDescription) {
       p.textContent = newDescription;
       task.description = newDescription;
