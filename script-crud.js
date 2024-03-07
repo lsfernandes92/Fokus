@@ -5,6 +5,7 @@ const textArea = document.querySelector(".app__form-textarea");
 const ulTasks = document.querySelector(".app__section-task-list");
 const activeTaskDescription = document.querySelector(".app__section-active-task-description");
 let selectedTask = null;
+let liSelectedTask = null;
 
 const taskList = JSON.parse(localStorage.getItem("tasks")) || [];
 
@@ -49,24 +50,6 @@ function addTaskElement(task) {
     }
   };
 
-  li.onclick = () => {
-    document.querySelectorAll(".app__section-task-list-item-active")
-      .forEach(element => {
-        element.classList.remove("app__section-task-list-item-active");
-      })
-      
-    if (selectedTask == task) {
-      activeTaskDescription.textContent = "";
-      selectedTask = null;
-      return;
-    }
-
-    selectedTask = task;
-
-    activeTaskDescription.textContent = task.description;
-    li.classList.add("app__section-task-list-item-active");
-  };
-
   const img = document.createElement("img");
   img.setAttribute("src", "imagens/edit.png");
   btnEdit.append(img);
@@ -74,6 +57,26 @@ function addTaskElement(task) {
   li.append(svg);
   li.append(p);
   li.append(btnEdit);
+
+  li.onclick = () => {
+    document.querySelectorAll(".app__section-task-list-item-active")
+      .forEach(element => {
+        element.classList.remove("app__section-task-list-item-active");
+      })
+
+    if (selectedTask == task) {
+      activeTaskDescription.textContent = "";
+      selectedTask = null;
+      liSelectedTask = null;
+      return;
+    }
+
+    selectedTask = task;
+    liSelectedTask = li;
+
+    activeTaskDescription.textContent = task.description;
+    li.classList.add("app__section-task-list-item-active");
+  };
 
   return li;
 }
@@ -100,4 +103,12 @@ btnCancelTask.addEventListener("click", clearForm);
 taskList.forEach(task => {
   const taskElement = addTaskElement(task)
   ulTasks.append(taskElement)
+});
+
+document.addEventListener("FocusFinished", () => {
+  if (selectedTask && liSelectedTask) {
+    liSelectedTask.classList.remove("app__section-task-list-item-active");
+    liSelectedTask.classList.add("app__section-task-list-item-complete");
+    liSelectedTask.querySelector("button").setAttribute("disabled", true);
+  }
 });

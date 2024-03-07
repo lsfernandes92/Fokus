@@ -10,7 +10,7 @@ const startPauseText = document.querySelector('#start-pause span');
 const startPauseImage = document.querySelector('.app__card-primary-butto-icon');
 const cardTimer = document.querySelector('#timer');
 
-let elapsedTimeInSeconds = 1500;
+let elapsedTimeInSeconds = 15;
 let intervalId = null;
 
 const backgroundSoundCheckbox = document.querySelector('#alternar-musica');
@@ -83,6 +83,13 @@ function alterContext(context) {
 const countdown = () => {
   if (elapsedTimeInSeconds <= 0) {
     finishedSound.play();
+    const focusActive = html.getAttribute("data-contexto");
+
+    if (focusActive) {
+      const event = new CustomEvent("FocusFinished");
+      document.dispatchEvent(event);
+    }
+    
     startPauseText.textContent = 'Começar';
     startPauseImage.setAttribute('src', `imagens/play_arrow.png`)
     reset();
