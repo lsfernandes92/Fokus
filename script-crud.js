@@ -3,6 +3,8 @@ const btnCancelTask = document.querySelector(".app__form-footer__button--cancel"
 const formAddTask = document.querySelector(".app__form-add-task");
 const textArea = document.querySelector(".app__form-textarea");
 const ulTasks = document.querySelector(".app__section-task-list");
+const activeTaskDescription = document.querySelector(".app__section-active-task-description");
+let selectedTask = null;
 
 const taskList = JSON.parse(localStorage.getItem("tasks")) || [];
 
@@ -45,6 +47,24 @@ function addTaskElement(task) {
       task.description = newDescription;
       updateTasks();
     }
+  };
+
+  li.onclick = () => {
+    document.querySelectorAll(".app__section-task-list-item-active")
+      .forEach(element => {
+        element.classList.remove("app__section-task-list-item-active");
+      })
+      
+    if (selectedTask == task) {
+      activeTaskDescription.textContent = "";
+      selectedTask = null;
+      return;
+    }
+
+    selectedTask = task;
+
+    activeTaskDescription.textContent = task.description;
+    li.classList.add("app__section-task-list-item-active");
   };
 
   const img = document.createElement("img");
