@@ -5,6 +5,7 @@ const textArea = document.querySelector(".app__form-textarea");
 const ulTasks = document.querySelector(".app__section-task-list");
 const activeTaskDescription = document.querySelector(".app__section-active-task-description");
 const btnClearFinishedTasks = document.querySelector("#btn-remover-concluidas");
+const btnClearAllTasks = document.querySelector("#btn-remover-todas");
 
 let selectedTask = null;
 let liSelectedTask = null;
@@ -107,14 +108,18 @@ formAddTask.addEventListener("submit", (event) => {
 
 btnCancelTask.addEventListener("click", clearForm);
 
-btnClearFinishedTasks.onclick = () => {
-  document.querySelectorAll(".app__section-task-list-item-complete")
+const removeTasks = (onlyFinished) => {
+  const selector = onlyFinished ? ".app__section-task-list-item-complete" : ".app__section-task-list-item"
+  document.querySelectorAll(selector)
     .forEach(element => {
       element.remove();
     })
-    taskList = taskList.filter(task => !task.finished);
+    taskList = onlyFinished ? taskList.filter(task => !task.finished) : []
     updateTasks();
 }
+
+btnClearFinishedTasks.onclick = () => removeTasks(true);
+btnClearAllTasks.onclick = () => removeTasks(false);
 
 taskList.forEach(task => {
   const taskElement = addTaskElement(task)
