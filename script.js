@@ -10,7 +10,7 @@ const startPauseText = document.querySelector('#start-pause span');
 const startPauseImage = document.querySelector('.app__card-primary-butto-icon');
 const cardTimer = document.querySelector('#timer');
 
-let elapsedTimeInSeconds = 15;
+let elapsedTimeInSeconds = 1500;
 let intervalId = null;
 
 const backgroundSoundCheckbox = document.querySelector('#alternar-musica');
